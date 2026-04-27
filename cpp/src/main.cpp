@@ -2,19 +2,26 @@
 #include "../include/kosajaru.h"
 #include "../include/graph_generator.h"
 #include <string.h>
+#include <unistd.h>
+#include <getopt.h>
 
 #define HELP_ARG "-h"
 #define GEN_RAND_GRAPH "-grg"
+#define GEN_RAND_TREE "-grt"
 #define RUN_FILE_GRAPH "-gf"
 
 constexpr const char* HELP_MSG = "Please provide and argument:\n"
                                 GEN_RAND_GRAPH " <vertex count> <edge probability> <output filename>    \n==> Generates a random graph with given vertex count and edge probablity, saves it to a filename\n"
-                                RUN_FILE_GRAPH " <filename>                                              \n==> Runs kosajaru on the provided graph in the file\n"
+                                GEN_RAND_TREE  " <vertex count> <low> <high> <output filename>          \n==> Generates a random tree with given vertex count where each nodes as between low and high children\n"
+                                RUN_FILE_GRAPH " <filename>                                             \n==> Runs kosajaru on the provided graph in the file\n"
                                 HELP_ARG "                                                              \n==> Displays this message";
 
 constexpr const char* MISSING_FILENAME_OPERAND_MSG = "Please provide a filename";
 constexpr const char* MISSING_V_COUNT_OPERAND_MSG = "Please provide the vertex count";
 constexpr const char* MISSING_E_PROB_COUNT = "Please provide the edge probability";
+constexpr const char* MISSING_LOW_OPERAND_MSG = "Please provide the low argument";
+constexpr const char* MISSING_HIGH_OPERAND_MSG = "Please provide the high argument";
+
 constexpr vertex_t DEFAULT_V_COUNT = 10;
 
 enum OPTIONS : uint8_t {
@@ -26,6 +33,10 @@ int main(int argc, char* argv[]) {
     char* filename{NULL};  
     vertex_t v_cnt{0};
     double e_prob{0};
+    vertex_t isolated_v_cnt{0};
+    vertex_t low{0};
+    vertex_t high{0};
+    bool tree = false;
     uint8_t optns;
 
     if(argc <= 1) {
@@ -45,7 +56,7 @@ int main(int argc, char* argv[]) {
             }
         }
         else if (strcmp(argv[i], GEN_RAND_GRAPH) == 0) {
-            if(argc > i + 1) {
+            if(argc > i + 4) {
                 v_cnt = std::stoi(argv[i + 1]);
             }
             else {
@@ -71,6 +82,42 @@ int main(int argc, char* argv[]) {
                 return 0;
             }
         }
+        else if (strcmp(argv[i], GEN_RAND_TREE) == 0) {
+            if(argc > i + 1) {
+                v_cnt = std::stoi(argv[i + 1]);
+            }
+            else {
+                std::cout << MISSING_V_COUNT_OPERAND_MSG << std::endl;
+                return 0;
+            }
+
+            if(argc > i + 2) {
+                low = std::stoi(argv[i + 2]);
+            }
+            else {
+                std::cout << MISSING_LOW_OPERAND_MSG << std::endl;
+                return 0;
+            }
+
+            if(argc > i + 3) {
+                high = std::stoi(argv[i + 3]);
+            }
+            else {
+                std::cout << MISSING_HIGH_OPERAND_MSG << std::endl;
+                return 0;
+            }
+
+            if(argc > i + 4) {
+                filename = argv[i + 4];
+                tree = true;
+                optns = OPTN_GEN_GRAPH;
+                break;
+            }
+            else {
+                std::cout << MISSING_FILENAME_OPERAND_MSG << std::endl;
+                return 0;
+            }
+        }
         else {
             std::cout << HELP_MSG << std::endl;
             return 0;
@@ -86,7 +133,13 @@ int main(int argc, char* argv[]) {
         break;
     }
     case OPTN_GEN_GRAPH: {
-        g = generate_rand_graph(v_cnt, e_prob, 3);
+        if(tree) {
+            g = generate_rand_tree(v_cnt, low, high);
+        }
+        else {
+            g = generate_rand_tree(v_cnt, 3, 5);
+        }
+
         g.save_to_file(filename);
     }
     default:
