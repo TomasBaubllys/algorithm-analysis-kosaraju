@@ -5,8 +5,11 @@
 #include <vector>
 #include <iostream>
 
-using vertex_t = uint32_t;
-using edge_t = uint32_t;
+constexpr const char* FAILED_TO_OPEN_FILE = "Failed to open the provided file!";
+constexpr const char* BAD_STRUCT = "Bad file format for the graph";
+
+using vertex_t = size_t;
+using edge_t = size_t;
 
 class Graph {
 	private:
@@ -16,9 +19,9 @@ class Graph {
 	public:
 		Graph();
 
-		Graph(vertex_t vertices_count, std::vector<std::vector<vertex_t>>& adj_list);
+		Graph(std::vector<std::vector<vertex_t>>& adj_list);
 
-		Graph(vertex_t vertices_count, std::vector<std::vector<vertex_t>>&& adj_list);
+		Graph(std::vector<std::vector<vertex_t>>&& adj_list);
 
 		~Graph();
 
@@ -28,9 +31,9 @@ class Graph {
 
 		void print_graph();
 
-		Graph load_from_file();
+		void load_from_file(const char* filename);
 
-		void save_to_file();
+		void save_to_file(const char* filename);
 };
 
 #endif // GRAPH_H_INCLUDED

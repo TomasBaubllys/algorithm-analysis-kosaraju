@@ -4,16 +4,6 @@
 #include "graph.h"
 #include <cstdint>
 
-struct Graph_Attr {
-	edge_t max_edges_per_v = 1e6;
-	edge_t min_edges_per_v = 0;
-};
-
-class Graph_Generator {
-	public:
-		static Graph generate_rand_graph(vertex_t v_count, edge_t e_count, Graph_Attr g_attr);
-	private:
-		static Graph generate_tree_graph(vertex_t v_count, edge_t e_count, Graph_Attr g_attr);
-};
+Graph generate_rand_graph(const vertex_t& v_count, const double& e_prob, size_t isolated_cnt = 0);
 
 #endif // GRAPH_GENERATOR_H_INCLUDED

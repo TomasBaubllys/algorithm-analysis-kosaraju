@@ -2,7 +2,7 @@
 #include <vector>
 
 void dfs1(const vertex_t curr_vertex, const std::vector<std::vector<vertex_t>>& adj_list, std::vector<bool>& visited, std::vector<vertex_t>& visit_stack) {
-    visited.at(curr_vertex) = true;
+    visited[curr_vertex] = true;
     for(const vertex_t& adj_v : adj_list[curr_vertex]) {
         if(!visited[adj_v])
             dfs1(adj_v, adj_list, visited, visit_stack);
@@ -11,7 +11,7 @@ void dfs1(const vertex_t curr_vertex, const std::vector<std::vector<vertex_t>>& 
 }
 
 void dfs2(const vertex_t curr_vertex, const std::vector<std::vector<vertex_t>>& adj_list, std::vector<bool>& visited, std::vector<vertex_t>& scc_container) {
-    visited.at(curr_vertex) = true;
+    visited[curr_vertex] = true;
     scc_container.push_back(curr_vertex);
     for(const vertex_t& adj_v : adj_list[curr_vertex]) {
         if(!visited[adj_v])
@@ -19,7 +19,8 @@ void dfs2(const vertex_t curr_vertex, const std::vector<std::vector<vertex_t>>& 
     }
 }
 
-std::vector<std::vector<vertex_t>>kosajaru(const vertex_t vertices_count, const std::vector<std::vector<vertex_t>>& adj_list) {
+std::vector<std::vector<vertex_t>>kosajaru(const std::vector<std::vector<vertex_t>>& adj_list) {
+    size_t vertices_count = adj_list.size();
     std::vector<bool> visited(vertices_count, false);
     std::vector<vertex_t> visit_stack;
     for(vertex_t i = 0; i < vertices_count; ++i) {
@@ -53,4 +54,14 @@ std::vector<std::vector<vertex_t>>kosajaru(const vertex_t vertices_count, const 
     }
 
     return sccs;
+}
+
+void print_sccs(const std::vector<std::vector<vertex_t>>& sccs) {
+    for(const std::vector<vertex_t>& scc : sccs) {
+        std::cout << "[";
+        for(const vertex_t& v : scc) {
+            std::cout << v << ", ";
+        }
+        std::cout << "\b\b]\n";
+    }
 }

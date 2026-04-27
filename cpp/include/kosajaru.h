@@ -6,11 +6,12 @@
 #include <stack>
 #include "graph.h"
 
-std::vector<std::vector<vertex_t>> kosajaru(const vertex_t vertices_count, const std::vector<std::vector<vertex_t>>& adj_list);
+std::vector<std::vector<vertex_t>> kosajaru(const std::vector<std::vector<vertex_t>>& adj_list);
 
-void dfs1(const vertex_t curr_vertex, const std::vector<std::vector<vertex_t>>& adj_list, std::vector<bool>& visited, std::vector<vertex_t>& visit_stack);
+static void dfs1(const vertex_t curr_vertex, const std::vector<std::vector<vertex_t>>& adj_list, std::vector<bool>& visited, std::vector<vertex_t>& visit_stack);
 
-void dfs2(const vertex_t curr_vertex, const std::vector<std::vector<vertex_t>>& adj_list, std::vector<bool>& visited, std::vector<vertex_t>& scc_container);
+static void dfs2(const vertex_t curr_vertex, const std::vector<std::vector<vertex_t>>& adj_list, std::vector<bool>& visited, std::vector<vertex_t>& scc_container);
 
+void print_sccs(const std::vector<std::vector<vertex_t>>& sccs);
 
 #endif // KOSAJARU_H_INCLUDED
