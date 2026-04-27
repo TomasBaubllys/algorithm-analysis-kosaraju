@@ -149,7 +149,7 @@ int main(int argc, char* argv[]) {
             g = generate_rand_tree(v_cnt, low, high);
         }
         else {
-            g = generate_rand_tree(v_cnt, 3, 5);
+            g = generate_rand_graph(v_cnt, e_prob);
         }
 
         g.save_to_file(filename);
