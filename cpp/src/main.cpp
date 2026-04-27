@@ -4,16 +4,19 @@
 #include <string.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <chrono>
 
 #define HELP_ARG "-h"
 #define GEN_RAND_GRAPH "-grg"
 #define GEN_RAND_TREE "-grt"
 #define RUN_FILE_GRAPH "-gf"
+#define VERBOSE_ARG "-v"
 
 constexpr const char* HELP_MSG = "Please provide and argument:\n"
                                 GEN_RAND_GRAPH " <vertex count> <edge probability> <output filename>    \n==> Generates a random graph with given vertex count and edge probablity, saves it to a filename\n"
                                 GEN_RAND_TREE  " <vertex count> <low> <high> <output filename>          \n==> Generates a random tree with given vertex count where each nodes as between low and high children\n"
                                 RUN_FILE_GRAPH " <filename>                                             \n==> Runs kosajaru on the provided graph in the file\n"
+                                VERBOSE_ARG                                                            "\n==> Prints sccs results to the screen"
                                 HELP_ARG "                                                              \n==> Displays this message";
 
 constexpr const char* MISSING_FILENAME_OPERAND_MSG = "Please provide a filename";
@@ -36,8 +39,9 @@ int main(int argc, char* argv[]) {
     vertex_t isolated_v_cnt{0};
     vertex_t low{0};
     vertex_t high{0};
-    bool tree = false;
-    uint8_t optns;
+    bool tree{false};
+    uint8_t optns{0xFF};
+    bool verbose{false};
 
     if(argc <= 1) {
         std::cout << HELP_MSG << std::endl;
@@ -55,8 +59,11 @@ int main(int argc, char* argv[]) {
                 std::cout << MISSING_FILENAME_OPERAND_MSG << std::endl;
             }
         }
+        else if(strcmp(argv[i], VERBOSE_ARG) == 0) {
+            verbose = true;
+        }
         else if (strcmp(argv[i], GEN_RAND_GRAPH) == 0) {
-            if(argc > i + 4) {
+            if(argc > i + 1) {
                 v_cnt = std::stoi(argv[i + 1]);
             }
             else {
@@ -128,8 +135,13 @@ int main(int argc, char* argv[]) {
     switch (optns) {
     case OPTN_RUN_FROM_FILE: {
         g.load_from_file(filename);
+        auto start = std::chrono::high_resolution_clock::now();
         std::vector<std::vector<vertex_t>> sccs = kosajaru(g.get_adj_list_ref());
-        print_sccs(sccs);
+        auto end = std::chrono::high_resolution_clock::now();
+        std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << std::endl;
+        if(verbose) {
+            print_sccs(sccs);
+        }
         break;
     }
     case OPTN_GEN_GRAPH: {

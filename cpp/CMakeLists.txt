@@ -8,3 +8,6 @@ set(SOURCE_FILES
     src/graph_generator.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+target_compile_options(${PROJECT_NAME} PRIVATE -g)
+
