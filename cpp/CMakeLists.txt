@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.24)
-project(kosajaru)
+project(kosaraju)
 
 set(SOURCE_FILES
     src/main.cpp
-    src/kosajaru.cpp
+    src/kosaraju.cpp
     src/graph.cpp
     src/graph_generator.cpp)
 

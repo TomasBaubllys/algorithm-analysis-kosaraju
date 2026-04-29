@@ -1,7 +1,7 @@
 #!/bin/bash
 
-E_PROBS=("0.2" "0.8")
-V_COUNTS=(100 500 1000 5000 10000) 
+E_PROBS=("0.1" "0.2" "0.4" "0.8" "1.0")
+V_COUNTS=(100 500 1000 2000 4000 6000 8000 10000 20000) 
 
 echo "Generating normal graphs"
 for e_p in ${E_PROBS[@]}; do
