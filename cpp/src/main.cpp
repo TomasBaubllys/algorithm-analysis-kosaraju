@@ -53,6 +53,7 @@ int main(int argc, char* argv[]) {
             if(argc > i + 1) {
                 filename = argv[i + 1];
                 optns = OPTN_RUN_FROM_FILE;
+                ++i;
             }
             else {
                 std::cout << MISSING_FILENAME_OPERAND_MSG << std::endl;
@@ -81,7 +82,7 @@ int main(int argc, char* argv[]) {
             if(argc > i + 3) {
                 filename = argv[i + 3];
                 optns = OPTN_GEN_GRAPH;
-                break;
+                i += 3;
             }
             else {
                 std::cout << MISSING_FILENAME_OPERAND_MSG << std::endl;
@@ -117,7 +118,7 @@ int main(int argc, char* argv[]) {
                 filename = argv[i + 4];
                 tree = true;
                 optns = OPTN_GEN_GRAPH;
-                break;
+                i += 4;
             }
             else {
                 std::cout << MISSING_FILENAME_OPERAND_MSG << std::endl;
@@ -152,6 +153,7 @@ int main(int argc, char* argv[]) {
         }
 
         g.save_to_file(filename);
+        break;
     }
     default:
         break;
