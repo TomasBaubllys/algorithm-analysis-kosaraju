@@ -33,7 +33,7 @@ enum OPTIONS : uint8_t {
 };
 
 int main(int argc, char* argv[]) {
-    char* filename{NULL};  
+    char* filename{NULL};
     vertex_t v_cnt{0};
     double e_prob{0};
     vertex_t isolated_v_cnt{0};
@@ -53,7 +53,6 @@ int main(int argc, char* argv[]) {
             if(argc > i + 1) {
                 filename = argv[i + 1];
                 optns = OPTN_RUN_FROM_FILE;
-                break;
             }
             else {
                 std::cout << MISSING_FILENAME_OPERAND_MSG << std::endl;
